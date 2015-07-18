@@ -2,115 +2,62 @@
   <div id="wrapper">
     <!-- header -->
     <div id="header">
-      <a id="yc" href="http://www.ycombinator.com">
-        <img src="https://news.ycombinator.com/y18.gif">
-      </a>
-      <h1><a href="#">Hacker News</a></h1>
-      <span class="source">
-        Built with <a href="http://vuejs.org" target="_blank">Vue.js</a> |
-        <a href="https://github.com/yyx990803/vue-hackernews" target="_blank">Source</a>
-      </span>
+        <div id="header-content" class="container">
+            <a id="logo" href="/list/index"></a>
+            <p id="username-info" class="pull-right col-md-2">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <span id="username"></span>
+            </p>
+        </div>
     </div>
-    <!-- main view -->
-    <component is="{{view}}"
-      class="view"
-      params="{{params}}"
-      keep-alive
-      v-transition
-      transition-mode="out-in">
-    </component>
+
+    <div id="main" class="container">
+      <div id="content" class="col-md-11">
+        <!-- main view -->
+        <component is="{{view}}"
+                   params="{{params}}"
+                   v-transition
+                   transition-mode="out-in">
+        </component>
+      </div>
+      <div class="col-md-1">
+        <div id="side-nav">
+          <ul>
+            <li>
+              <a href="#/list/home" class="active">首页</a>
+              <ul class="nav sub-item">
+                <li class="active"><a href="#/list/home/banner">Banner区</a></li>
+                <li><a href="#/list/home/icon/1">Icons区</a></li>
+                <li><a href="#/list/home/t10/1">Top10区</a></li>
+                <li><a href="#/list/home/business/1">运营位区</a></li>
+                <li><a href="#/list/home/vdeal/1">虚拟团单区</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-module.exports = {
-  el: '#app',
-  data: {
-    view: '',
-    params: {
-      page: 1,
-      userId: null,
-      itemId: null
+    module.exports = {
+        el: '#app',
+        data: {
+            view: '',
+            params: {
+                page: '',
+                type: '',
+                pn: ''
+            }
+        },
+        components: {
+            'list-view': require('./views/list.vue'),
+            'create-view': require('./views/create.vue')
+        }
     }
-  },
-  filters: {
-    fromNow: require('./filters/from-now'),
-    domain: require('./filters/domain')
-  },
-  components: {
-    'news-view': require('./views/news-view.vue'),
-    'item-view': require('./views/item-view.vue'),
-    'user-view': require('./views/user-view.vue')
-  }
-}
 </script>
 
-<style lang="stylus">
-@import "./shared.styl"
-html, body
-  font-family Verdana
-  font-size 13px
-  height 100%
-
-ul
-  list-style-type none
-  padding 0
-  margin 0
-
-a
-  color #000
-  cursor pointer
-  text-decoration none
-  
-#wrapper
-  background-color $bg
-  position relative
-  width 85%
-  min-height 80px
-  margin 0 auto
-
-#header
-  background-color #f60
-  height 24px
-  position relative
-  h1
-    font-weight bold
-    font-size 13px
-    display inline-block
-    vertical-align middle
-    margin 0
-  .source
-    color #fff
-    font-size 11px
-    position absolute
-    top 4px
-    right 4px
-    a
-      color #fff
-      &:hover
-        text-decoration underline
-
-#yc
-  border 1px solid #fff
-  margin 2px
-  display inline-block
-  vertical-align middle
-  img
-    vertical-align middle
-
-.view
-  position absolute
-  background-color $bg
-  width 100%
-  transition opacity .2s ease
-  box-sizing border-box
-  padding 8px 20px
-  &.v-enter, &.v-leave
-    opacity 0
-
-@media screen and (max-width: 700px)
-  html, body
-    margin 0
-  #wrapper
-    width 100%
+<style lang="less">
+@import "static/style/app.less";
 </style>

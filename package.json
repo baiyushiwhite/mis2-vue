@@ -19,13 +19,23 @@
   "homepage": "https://github.com/yyx990803/vue-hackernews",
   "devDependencies": {
     "css-loader": "^0.14.4",
+    "eonasdan-bootstrap-datetimepicker": "^4.14.30",
+    "file-loader": "^0.8.4",
+    "font-awesome": "^4.3.0",
+    "font-awesome-webpack": "0.0.3",
     "html-loader": "^0.3.0",
+    "jquery": "^2.1.4",
+    "less": "^2.5.1",
+    "less-loader": "^2.2.0",
     "style-loader": "^0.12.3",
     "stylus-loader": "^1.2.0",
+    "url-loader": "^0.5.6",
     "vue-loader": "2.0.0",
     "webpack": "^1.8.4"
   },
   "dependencies": {
+    "bootstrap": "^3.3.5",
+    "bootstrap-webpack": "0.0.3",
     "director": "^1.2.8",
     "firebase": "^2.2.4",
     "vue": "^0.12.0"
