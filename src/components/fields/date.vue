@@ -68,6 +68,7 @@
             }
         },
         ready: function () {
+            // 在require(jquery)先执行
             if (!this.startTime || !this.endTime) {
                 var today = new Date()
                 this.startTime = today.getFullYear() + '-0' + (today.getMonth() + 1) + '-' + today.getDate()
@@ -80,5 +81,5 @@
 </script>
 
 <style lang="less">
-    @import "../../dep/bootstrap/bootstrap-datetimepicker.min.css";
+    @import "../../dep/bootstrap/bootstrap-datetimepicker.css";
 </style>

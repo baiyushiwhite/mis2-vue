@@ -11,6 +11,7 @@
                 <span class="reminder"></span>
             </div>
         </template>
+
         <a class="add-time-btn circle-btn" v-on="click:addDuration"><span class="glyphicon glyphicon-plus"></span></a>
     </div>
 </template>

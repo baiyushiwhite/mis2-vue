@@ -29,6 +29,7 @@
                        id="pic_url"
                        type="file"
                        class="hidden"/>
+
                 <img src="{{item.pic_url || ''}}" title="{{item.pic_url || ''}}"/>
             </template>
 
