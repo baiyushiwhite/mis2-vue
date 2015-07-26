@@ -32,6 +32,7 @@
                                       placeholder="请输入说明">
                             </textarea>
                             </template>
+
                             <!-- ugly::由于原值pic_url的格式和最终提交的数据不一致，因此需要另一个变量picUrl来上传-->
                             <template v-if="'picUrl' === fieldConfig.field">
                                 <component is="image" pic-source="{{editItem.pic_url}}" pic-url="{{@ editItem.picUrl}}"
@@ -58,6 +59,16 @@
                             </textarea>
                             </template>
 
+                            <template v-if="'desc' === fieldConfig.field">
+                            <textarea v-model="editItem[fieldConfig.field]"
+                                      v-on="change:validate(fieldConfig)"
+                                      class="textarea-input col-md-7"
+                                      v-class="invalid:fieldConfig.invalid"
+                                      rows="4"
+                                      placeholder="请输入该团单描述">
+                            </textarea>
+                            </template>
+
                             <template v-if="'current_price' === fieldConfig.field">
                                 <input type="text"
                                        v-model="editItem[fieldConfig.field]"
@@ -66,6 +77,16 @@
                                        v-class="invalid:fieldConfig.invalid"
                                        placeholder="请输入该团单价格(元)，非负数" />
                             </textarea>
+                            </template>
+
+                            <template v-if="'market_price' === fieldConfig.field">
+                                <input type="text"
+                                       v-model="editItem[fieldConfig.field]"
+                                       v-on="change:validate(fieldConfig)"
+                                       class="price text-input col-md-5"
+                                       v-class="invalid:fieldConfig.invalid"
+                                       placeholder="请输入该团单原价(元)，非负数" />
+                                </textarea>
                             </template>
 
                             <template v-if="'date' === fieldConfig.field">
@@ -126,11 +147,6 @@
             },
             'editItem': function () {
                 this.typeConfig = $.extend(true, [], config.editConfig[this.params.page][this.params.type])
-                $.each(this.editItem.active_time, function (i, duration) {
-                    duration.remind = ''
-                    duration.startInvalid = false
-                    duration.endInvalid = false
-                })
             }
         },
         ready: function () {

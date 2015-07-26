@@ -24,7 +24,7 @@ module.exports = {
         invalidCity: '请选择投放城市',
         invalidImg: '请选择正确图片',
         invalidImageSize: '图片大小不超过100kb',
-        invalidPrice: '请输入正确的价格（正数）'
+        invalidPrice: '请输入正确的价格（非负数）'
     },
     MAX_IMG_SIZE: 100000,
     page: {
@@ -71,7 +71,30 @@ module.exports = {
                 {title: '图片', field: 'picUrl', must: true, format: 'img', remind: '', invalid: false},
                 {title: '跳转地址', field: 'link_url', must: true, format: 'url', remind: '', invalid: false},
                 {title: '标题', field: 'title', must: false, format: 'text', remind: '', invalid: false},
-                {title: '价格', field: 'current_price', must: true, format: 'price', remind: '', invalid: false},
+                {title: '价格', field: 'current_price', must: false, format: 'price', remind: '', invalid: false},
+                {title: '投放日期', field: 'date', must: true, format: 'date', invalid: false},
+                {title: '投放时间', field: 'active_time', must: true, format: 'duration', invalid: false},
+                {title: '投放城市', field: 'activeCityIds', must: true, format: 'city', invalid: false}
+            ],
+            business: [
+                {title: '显示位置', field: 'position', must: true, format: 'nonnegative', remind: '', invalid: false},
+                {title: 'sid', field: 'sid', must: false, format: 'nonnegative', remind: '', invalid: false},
+                {title: '说明', field: 'explanation', must: false, format: 'text', remind: '', invalid: false},
+                {title: '图片', field: 'picUrl', must: true, format: 'img', remind: '', invalid: false},
+                {title: '跳转地址', field: 'link_url', must: true, format: 'url', remind: '', invalid: false},
+                {title: '投放日期', field: 'date', must: true, format: 'date', invalid: false},
+                {title: '投放时间', field: 'active_time', must: true, format: 'duration', invalid: false},
+                {title: '投放城市', field: 'activeCityIds', must: true, format: 'city', invalid: false}
+            ],
+            vdeal: [
+                {title: 'sid', field: 'sid', must: false, format: 'nonnegative', remind: '', invalid: false},
+                {title: '说明', field: 'explanation', must: false, format: 'text', remind: '', invalid: false},
+                {title: '图片', field: 'picUrl', must: true, format: 'img', remind: '', invalid: false},
+                {title: '跳转地址', field: 'link_url', must: true, format: 'url', remind: '', invalid: false},
+                {title: '标题', field: 'title', must: true, format: 'text', remind: '', invalid: false},
+                {title: '描述', field: 'desc', must: true, format: 'text', remind: '', invalid: false},
+                {title: '价格', field: 'current_price', must: false, format: 'price', remind: '', invalid: false},
+                {title: '原价', field: 'market_price', must: false, format: 'price', remind: '', invalid: false},
                 {title: '投放日期', field: 'date', must: true, format: 'date', invalid: false},
                 {title: '投放时间', field: 'active_time', must: true, format: 'duration', invalid: false},
                 {title: '投放城市', field: 'activeCityIds', must: true, format: 'city', invalid: false}
