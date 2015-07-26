@@ -1,3 +1,6 @@
+var webpack = require('webpack')
+var ExtractTextPlugin = require('extract-text-webpack-plugin')
+
 module.exports = {
   entry: "./src/main.js",
   output: {
@@ -12,23 +15,30 @@ module.exports = {
         loader: 'url'
       },
       {
-        test: /\.vue/,
-        loader: 'vue-loader'
+        test: /\.css$/,
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
       },
       {
-        test: /\.less/,
-        loader: 'css-loader!less-loader'
+        test: /\.less$/,
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader!less-loader')
+      },
+      {
+        test: /\.vue/,
+        loader: 'vue-loader'
       },
       { test: /bootstrap\/js\//, loader: 'imports?jQuery=jquery' },
       { test: /\.woff(2)?(\?v=\d+\.\d+\.\d+)?$/,   loader: "file?name=/static/[hash].[ext]&limit=10000&minetype=application/font-woff" },
       { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,    loader: "file?name=/static/[hash].[ext]&limit=10000&minetype=application/octet-stream" },
       { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,    loader: "file?name=/static/[hash].[ext]" },
       { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,    loader: "file?name=/static/[hash].[ext]&limit=10000&minetype=image/svg+xml" }
-      //{ test: /\.woff(2)?(\?v=\d+\.\d+\.\d+)?$/,   loader: "url?limit=10000&minetype=application/font-woff" },
-      //{ test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,    loader: "url?limit=10000&minetype=application/octet-stream" },
-      //{ test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,    loader: "file?name=static/[hash].[ext]" },
-      //{ test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,    loader: "url?limit=10000&minetype=image/svg+xml" }
     ]
   },
-  devtool: '#source-map'
+  plugins: [
+    //new webpack.optimize.UglifyJsPlugin({
+    //  compress: {
+    //    warnings: false
+    //  }
+    //}),
+    new ExtractTextPlugin("css/[name].css")
+  ]
 }

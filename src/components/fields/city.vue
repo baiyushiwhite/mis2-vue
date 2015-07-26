@@ -1,51 +1,55 @@
 <template>
-    <p class="hint">已选择<span class="selected-city-num">{{activeCityIds.length}}</span>个城市</p>
-    <p class="hint">热门城市</p>
-    <div class="hot-city-panel city-panel">
-        <label>
-            <input class="choose-all"
-                   type="checkbox"
-                   v-model="allHotCitiesSelected"
-                   v-on="click:checkAllHotCity($event)">全选
-        </label>
-        <ul class="hot-city-list city-list" v-on="click:checkBox($event)">
-            <label v-repeat="city:hotCities">
-                <input class="city-checkbox"
-                       v-model="activeCityIds.indexOf(city.areaId) >= 0"
-                       type="checkbox" value="{{city.areaId}}">{{city.shortName}}
+    <div class="col-md-10 city-field">
+        <img class="loading" v-class="hidden:loaded" src="../../static/img/loading.gif">
+        <p class="hint">已选择<span class="selected-city-num" v-class="invalid:fieldConfig.invalid">{{activeCityIds.length}}</span>个城市</p>
+        <p class="hint">热门城市</p>
+        <div class="hot-city-panel city-panel">
+            <label>
+                <input class="choose-all"
+                       type="checkbox"
+                       v-model="allHotCitiesSelected"
+                       v-on="click:checkAllHotCity($event)">全选
             </label>
-        </ul>
-    </div>
-    <p class="hint">全部城市</p>
-    <div class="all-city-panel city-panel">
-        <label>
-            <input class="choose-all"
-                   type="checkbox"
-                   v-model="allCitiesSelected"
-                   v-on="click:checkAllCity($event)">全选
-        </label>
-        <ul class="all-city-list city-list" v-on="click:checkBox($event)">
-            <li v-repeat="allCities">
-                <p>{{$key}}</p>
-
-                <label v-repeat="city:$value">
+            <ul class="hot-city-list city-list" v-on="click:checkBox($event)">
+                <label v-repeat="city:hotCities">
                     <input class="city-checkbox"
-                           v-model="activeCityIds.indexOf(city.areaId) >= 0"
+                           v-model="activeCityIds.indexOf(city.areaId) + 1"
                            type="checkbox" value="{{city.areaId}}">{{city.shortName}}
                 </label>
-            </li>
-        </ul>
+            </ul>
+        </div>
+        <p class="hint">全部城市</p>
+        <div class="all-city-panel city-panel">
+            <label>
+                <input class="choose-all"
+                       type="checkbox"
+                       v-model="allCitiesSelected"
+                       v-on="click:checkAllCity($event)">全选
+            </label>
+            <ul class="all-city-list city-list" v-on="click:checkBox($event)">
+                <li v-repeat="allCities">
+                    <p>{{$key}}</p>
+
+                    <label v-repeat="city:$value">
+                        <input class="city-checkbox"
+                               v-model="activeCityIds.indexOf(city.areaId) + 1"
+                               type="checkbox" value="{{city.areaId}}">{{city.shortName}}
+                    </label>
+                </li>
+            </ul>
+        </div>
     </div>
+
 </template>
 
 <script>
     var $ = require('jquery')
-    var Config = require('../../config.js')
-    var Util = require('../../util.js')
+    var config = require('../../config.js')
+    var util = require('../../util.js')
 
     module.exports = {
         replace: true,
-        props: ['activeCity', 'activeCityIds'],
+        props: ['activeCity', 'activeCityIds', 'fieldConfig'],
         data: function () {
             return {
                 activeCity: [],
@@ -53,7 +57,8 @@
                 hotCities: [],
                 allCities: {},
                 allCitiesNum: 0,
-                test: true
+                fieldConfig: {},
+                loaded: false
             }
         },
         computed: {
@@ -76,6 +81,11 @@
                 return this.activeCityIds.length === this.allCitiesNum
             }
         },
+        watch: {
+            'activeCity': function () {
+                this.initActiveCity()
+            }
+        },
         methods: {
             initAllCitiesNum: function () {
                 var count = 0
@@ -92,30 +102,29 @@
                     me.activeCity = []
                 }
 
-                if (!me.activeCityIds || me.activeCityIds.length === 0) {
-                    me.activeCityIds = []
-                    $.each(me.activeCity, function (i, city) {
-                        me.activeCityIds.push(city.areaid)
-                    })
-                }
+                me.activeCityIds = []
+                $.each(me.activeCity, function (i, city) {
+                    me.activeCityIds.push(city.areaId)
+                })
             },
             loadCity: function () {
                 var me = this
                 $.ajax({
-                    url: Config.url.CITY_URL,
+                    url: config.url.CITY_URL,
                     method: 'get',
                     dataType: 'json'
                 }).done(function (res) {
-                    if (res.errno != Config.statusCode.SUCCESS) {
-                        Util.permissionForbidden(res)
+                    if (res.errno != config.statusCode.SUCCESS) {
+                        util.permissionForbidden(res)
                     } else {
                         me.allCities = res.data.list
                         me.hotCities = res.data.cityhot
-
+                        me.loaded = true
                         me.initAllCitiesNum()
                     }
                 }).fail(function () {
-                    Util.errorHandler(undefined, '获取城市列表失败')
+                    me.loaded = true
+                    util.errorHandler(undefined, '获取城市列表失败')
                 })
             },
             removeCity: function (cityId) {
@@ -174,7 +183,9 @@
         },
         created: function () {
             this.initActiveCity()
-            this.loadCity()
+            if (!this.loaded) {
+                this.loadCity()
+            }
         }
     }
 </script>

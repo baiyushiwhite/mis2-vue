@@ -20,6 +20,7 @@
   "devDependencies": {
     "css-loader": "^0.14.4",
     "eonasdan-bootstrap-datetimepicker": "^4.14.30",
+    "extract-text-webpack-plugin": "^0.8.2",
     "file-loader": "^0.8.4",
     "font-awesome": "^4.3.0",
     "font-awesome-webpack": "0.0.3",

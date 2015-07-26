@@ -1,4 +1,18 @@
-@import "variable.less";
+body {
+  width: 100%;
+  font-family: "Microsoft Yahei", "宋体";
+  a {
+    color: @dark-green;
+    text-decoration: none;
+    cursor: pointer;
+    &:hover {
+      color: @dark-green;
+    }
+  }
+  ul {
+    list-style: none;
+  }
+}
 .title {
   font-size: 20px;
   color: @base-green;
@@ -38,4 +52,82 @@
     border-color: @dark-gray;
     text-decoration: none;
   }
+}
+
+a.circle-btn {
+  display: inline-block;
+  border-radius: 20px;
+  color: white;
+  background-color: @base-gray;
+  width: 20px;
+  height: 20px;
+  font-size: 10px;
+  font-weight: lighter;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 20px;
+  margin-right: 20px;
+  &:hover {
+    color: white;
+    background-color: @dark-gray;
+  }
+}
+
+input, textarea, select, button {
+  outline: none;
+  margin-right: 20px;
+
+  &:focus {
+    outline: none;
+  }
+  &::-webkit-input-placeholder { /* WebKit browsers */
+    color: #d0d0d0;
+  }
+  &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: @light-gray;
+    opacity:  1;
+  }
+  &::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: @light-gray;
+    opacity:  1;
+  }
+  &:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color: @light-gray;
+  }
+}
+
+
+.required {
+  color: #ff0000;
+}
+.text-input {
+  font-size: 13px;
+  color: @font-dark-gray;
+  padding: 5px 10px;
+  background: @light-gray;
+  border: 1px solid @light-gray;
+  height: 35px;
+  margin-right: 20px;
+}
+.textarea-input {
+  font-size: 13px;
+  color: @font-dark-gray;
+  padding: 5px 10px;
+  background: @light-gray;
+  border: 1px solid @light-gray;
+  border-radius: 2px;
+  resize: none;
+}
+
+.modal .modal-body {
+  padding: 10px 20px;
+  overflow: auto;
+  fieldset {
+    margin-bottom: 15px;
+    padding: 10px 0;
+  }
+}
+
+.modal-sm .modal-body{
+  text-align: center;
 }

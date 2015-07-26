@@ -1,104 +1,179 @@
 <template>
-    <form class="edit-item-form">
-        <fieldset v-repeat="fieldConfig:typeConfig">
-            <label class="col-md-2">
-                <span v-if="fieldConfig.isOption" class="required">*</span>
-                {{fieldConfig.title}}
-            </label>
-            <template v-if="['position', 'sid'].indexOf(fieldConfig.field) >= 0">
-                <input type="text"
-                       v-model="item[fieldConfig.field]"
-                       v-on="change:validate(fieldConfig, $event)"
-                       class="text-input col-md-5"
-                       placeholder="请输入位置（仅限正整数）"/>
-            </template>
+    <div id="edit-dialog" class="modal fade edit-modal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">编辑</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="edit-item-form">
+                        <fieldset v-repeat="fieldConfig:typeConfig">
+                            <label class="col-md-2">
+                                <span v-if="fieldConfig.must" class="required">*</span>
+                                {{fieldConfig.title}}
+                            </label>
+                            <template v-if="['position', 'sid'].indexOf(fieldConfig.field) >= 0">
+                                <input type="text"
+                                       v-model="editItem[fieldConfig.field]"
+                                       v-on="change:validate(fieldConfig)"
+                                       v-class="invalid:fieldConfig.invalid"
+                                       class="text-input col-md-5"
+                                       placeholder="请输入位置（仅限正整数）"/>
+                            </template>
 
-            <template v-if="'explanation' === fieldConfig.field">
-                <textarea v-model="item[fieldConfig.field]"
-                          v-on="change:validate(fieldConfig)"
-                          class="textarea-input col-md-7"
-                          rows="4"
-                          placeholder="请输入说明">
-                </textarea>
-            </template>
+                            <template v-if="'explanation' === fieldConfig.field">
+                            <textarea v-model="editItem[fieldConfig.field]"
+                                      v-on="change:validate(fieldConfig)"
+                                      class="textarea-input col-md-7"
+                                      v-class="invalid:fieldConfig.invalid"
+                                      rows="4"
+                                      placeholder="请输入说明">
+                            </textarea>
+                            </template>
+                            <!-- ugly::由于原值pic_url的格式和最终提交的数据不一致，因此需要另一个变量picUrl来上传-->
+                            <template v-if="'picUrl' === fieldConfig.field">
+                                <component is="image" pic-source="{{editItem.pic_url}}" pic-url="{{@ editItem.picUrl}}"
+                                           field-config="{{@ fieldConfig}}"></component>
+                            </template>
 
-            <template v-if="'pic_url' === fieldConfig.field">
-                <label for="pic_url" class="gray-btn">上传图片</label>
-                <input v-model="item.pic_url"
-                       v-on="change:validate(fieldConfig)"
-                       id="pic_url"
-                       type="file"
-                       class="hidden"/>
+                            <template v-if="'link_url' === fieldConfig.field">
+                            <textarea v-model="editItem.link_url"
+                                      v-on="change:validate(fieldConfig)"
+                                      class="textarea-input col-md-7"
+                                      v-class="invalid:fieldConfig.invalid"
+                                      rows="4"
+                                      placeholder="请输入该团单的跳转地址">
+                            </textarea>
+                            </template>
 
-                <img src="{{item.pic_url || ''}}" title="{{item.pic_url || ''}}"/>
-            </template>
+                            <template v-if="'title' === fieldConfig.field">
+                            <textarea v-model="editItem[fieldConfig.field]"
+                                      v-on="change:validate(fieldConfig)"
+                                      class="textarea-input col-md-7"
+                                      v-class="invalid:fieldConfig.invalid"
+                                      rows="2"
+                                      placeholder="请输入团单标题">
+                            </textarea>
+                            </template>
 
-            <template v-if="'link_url' === fieldConfig.field">
-                <textarea v-model="item.link_url"
-                          v-on="change:validate(fieldConfig)"
-                          class="textarea-input col-md-7"
-                          rows="4"
-                          placeholder="请输入该团单的跳转地址">
-                </textarea>
-            </template>
+                            <template v-if="'current_price' === fieldConfig.field">
+                                <input type="text"
+                                       v-model="editItem[fieldConfig.field]"
+                                       v-on="change:validate(fieldConfig)"
+                                       class="price text-input col-md-5"
+                                       v-class="invalid:fieldConfig.invalid"
+                                       placeholder="请输入该团单价格(元)，非负数" />
+                            </textarea>
+                            </template>
 
-            <template v-if="'date' === fieldConfig.field">
-                <component is="date-field" start-time="{{@ item.start_time}}" end-time="{{@ item.end_time}}"></component>
-            </template>
+                            <template v-if="'date' === fieldConfig.field">
+                                <component is="date-field" start-time="{{@ editItem.start_time}}"
+                                           end-time="{{@ editItem.end_time}}"></component>
+                            </template>
 
-            <template v-if="'time' === fieldConfig.field">
-                <component is="time-field" active-time="{{@ item.active_time}}"></component>
-            </template>
+                            <template v-if="'active_time' === fieldConfig.field">
+                                <component is="time-field" active-time="{{@ editItem.active_time}}"></component>
+                            </template>
 
-            <template v-if="'city' === fieldConfig.field">
-                <component is="city-field" active-city="{{@ item.active_city}}" active-city-ids="{{@ item.activeCityIds}}"></component>
-            </template>
-            <span class="reminder"></span>
-        </fieldset>
-
-        <button type="button" class="submit-btn primary-btn" v-on="click:submitItem">提交</button>
-    </form>
+                            <!-- ugly::由于原值active_city的格式和最终提交的数据不一致，因此需要另一个变量activeCityIds来上传-->
+                            <template v-if="'activeCityIds' === fieldConfig.field">
+                                <component is="city"
+                                           active-city="{{editItem.active_city}}"
+                                           active-city-ids="{{@ editItem.activeCityIds}}"
+                                           field-config="{{fieldConfig}}"></component>
+                            </template>
+                            <span v-if="fieldConfig.remind" class="reminder">{{fieldConfig.remind}}</span>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer center-block">
+                    <button type="button" class="gray-btn" data-dismiss="modal">取消</button>
+                    <button id="banner-submit-btn" type="button" class="submit-btn primary-btn"
+                            v-attr="disabled: disabled" v-on="click:submitItem">提交
+                    </button>
+                </div>
+            </div>
+    </div></div>
 </template>
 
 <script>
-    var Config = require('../config.js')
+    var config = require('../config.js')
     var validator = require('../validator.js')
-
+    var $ = require('jquery')
+    var util = require('../util.js')
     module.exports = {
         replace: true,
-        props: ['item', 'params'],
+        props: ['editItem', 'params'],
         data: function () {
             return {
                 params: {
                     page: '',
                     type: ''
                 },
-                item: {}
+                editItem: {},
+                typeConfig: [],
+                disabled: false
             }
         },
-        computed: {
-            typeConfig: function () {
-                return Config.editConfig[this.params.page][this.params.type]
+        watch: {
+            'params.page': function () {
+                this.typeConfig = $.extend(true, [], config.editConfig[this.params.page][this.params.type])
+            },
+            'params.type': function () {
+                this.typeConfig = $.extend(true, [], config.editConfig[this.params.page][this.params.type])
+            },
+            'editItem': function () {
+                this.typeConfig = $.extend(true, [], config.editConfig[this.params.page][this.params.type])
+                $.each(this.editItem.active_time, function (i, duration) {
+                    duration.remind = ''
+                    duration.startInvalid = false
+                    duration.endInvalid = false
+                })
             }
+        },
+        ready: function () {
+            this.typeConfig = $.extend(true, [], config.editConfig[this.params.page][this.params.type])
         },
         components: {
             'date-field': require('./fields/date.vue'),
             'time-field': require('./fields/time.vue'),
-            'city-field': require('./fields/city.vue')
+            'city': require('./fields/city.vue'),
+            'image': require('./fields/img.vue')
         },
         methods: {
-            validate: function (fieldConfig, e) {
-                var validateResult = validator.validate(fieldConfig, this.item[fieldConfig.field])
+            validate: function (fieldConfig) {
+                validator.validate(fieldConfig, this.editItem[fieldConfig.field])
             },
             submitItem: function () {
-                if (this.validate()) {
+                var me = this
+                var formData = validator.validateAll(this.typeConfig, me.editItem)
+                if (formData) {
+                    formData.append('pagetype', this.params.page)
+                    formData.append('ideatype', this.params.type)
 
+                    me.disabled = true
+                    $.ajax({
+                        url: config.url.UPDATE_ITEM_URL,
+                        method: 'post',
+                        processData: false,
+                        contentType: false,
+                        data: formData,
+                        dataType: 'json'
+                    }).done(function (res) {
+                        if (res.errno != config.statusCode.SUCCESS) {
+                            util.permissionForbidden(res);
+                        } else {
+                            util.successHint('恭喜你，提交成功啦');
+                            window.location.reload()
+                        }
+                        me.disabled = false
+                    }).fail(function (xhr, error) {
+                        me.disabled = false
+                    })
                 }
             }
         }
     }
 </script>
-
-<style lang="less">
-
-</style>

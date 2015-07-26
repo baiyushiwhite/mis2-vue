@@ -1,24 +1,16 @@
 <template>
-    <div class="col-md-3">
-        <div class="form-group">
-            <div class="input-group date" id="start-date">
-                <input type="text" class="form-control" v-model="startTime"/>
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-            </div>
-        </div>
+    <div class="input-group col-md-3 date" id="start-date">
+        <input type="text" class="form-control text-input" v-model="startTime"/>
+        <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+        </span>
     </div>
-    到
-    <div class="col-md-3">
-        <div class="form-group">
-            <div class="input-group date" id="end-date">
-                <input type="text" class="form-control" v-model="endTime"/>
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-            </div>
-        </div>
+    <span class="pull-left">到</span>
+    <div class="input-group col-md-3 date" id="end-date">
+        <input type="text" class="form-control text-input" v-model="endTime"/>
+        <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+        </span>
     </div>
 </template>
 
@@ -52,8 +44,14 @@
                             }
                         }
 
-                        $('#start-date').datetimepicker(pickerConf).data("DateTimePicker").defaultDate(me.startTime).minDate(minDate)
-                        $('#end-date').datetimepicker(pickerConf).data("DateTimePicker").defaultDate(me.endTime).minDate(me.startTime)
+                        $('#start-date').datetimepicker(pickerConf)
+                                .data("DateTimePicker")
+                                .defaultDate(me.startTime)
+                                .minDate(minDate)
+                        $('#end-date').datetimepicker(pickerConf)
+                                .data("DateTimePicker")
+                                .defaultDate(me.endTime)
+                                .minDate(me.startTime)
 
                         $("#start-date").on("dp.change", function (e) {
                             $('#end-date').data("DateTimePicker").minDate(e.date)
@@ -79,7 +77,3 @@
         }
     }
 </script>
-
-<style lang="less">
-    @import "../../dep/bootstrap/bootstrap-datetimepicker.css";
-</style>

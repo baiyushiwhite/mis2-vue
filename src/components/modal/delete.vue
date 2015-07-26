@@ -1,16 +1,16 @@
 <template>
-    <div id="approve-dialog" class="modal fade" role="dialog">
+    <div id="delete-dialog" class="modal fade" role="dialog">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times</span></button>
-                    <h4 class="modal-title">确认通过？</h4>
+                    <h4 class="modal-title">确认删除？</h4>
                 </div>
                 <div class="modal-body">
                     <button type="button" class="gray-btn" data-dismiss="modal">取消</button>
                     <button type="button" class="confirm-btn primary-btn" v-attr="disabled:disabled"
-                            v-on="click:confirmApprove">确定
+                            v-on="click:confirmDelete">确定
                     </button>
                 </div>
             </div>
@@ -24,7 +24,7 @@
     var $ = require('jquery')
 
     module.exports = {
-        el: '#approve-dialog',
+        el: '#delete-dialog',
         props: ['operationId'],
         data: function () {
             return {
@@ -33,7 +33,7 @@
             }
         },
         methods: {
-            confirmApprove: function () {
+            confirmDelete: function () {
                 var me = this
                 me.disabled = true
                 $.ajax({
@@ -42,7 +42,7 @@
                     dataType: 'json',
                     data: {
                         id: me.operationId,
-                        opt: 'confirm'
+                        opt: 'delete'
                     }
                 }).done(function (res) {
                     if (res.errno != config.statusCode.SUCCESS) {
@@ -50,13 +50,13 @@
                     } else {
                         $(me.$el).modal('hide')
                         me.disabled = false
-                        util.successHint('恭喜你，通过操作成功啦')
+                        util.successHint('恭喜你，删除操作成功啦')
                         window.location.reload()
                     }
                 }).fail(function (xhr, error) {
                     $(me.$el).modal('hide')
                     me.disabled = false
-                    util.errorHandler('', '通过操作失败了哦o(╯□╰)o')
+                    util.errorHandler('', '删除操作失败了哦o(╯□╰)o')
                 })
             }
         }

@@ -1,12 +1,12 @@
 <template>
-    <div id="{{params.type}}-section" class="section">
-        <div id="{{params.type}}-info" class="info-section inner-section clearfix">
+    <div class="section">
+        <div class="info-section clearfix">
             <span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
             <span class="title">{{params.type}}区域</span>
-            <a class="create-btn pull-right primary-btn" href="#/create/{{params.page}}/{{params.type}}" data-type="{{params.type}}" data-target="#{{params.type}}-edit-dialog">新建内容</a>
+            <a class="create-btn pull-right primary-btn" data-type="{{params.type}}" v-on="click:showCreate" data-target="#{{params.type}}-edit-dialog">新建内容</a>
         </div>
         <img class="loading center-block" src="../static/img/loading.gif"/>
-        <div class="list-section inner-section">
+        <div class="list-section">
             <table class="list-table">
                 <thead>
                 <tr>
@@ -14,20 +14,24 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr v-repeat="item:list" v-component="item" type-config="{{typeConfig}}" show-item="{{@ showItem}}"></tr>
+                    <tr v-repeat="item:list" v-component="item" type-config="{{typeConfig}}" show-item="{{@ showItem}}" edit-item="{{@ editItem}}" operation-id="{{@ operationId}}"></tr>
                 </tbody>
             </table>
             <component is="pagination" total="{{total}}" params="{{params}}"></component>
         </div>
     </div>
 
-    <div id="view-dialog" class="modal fade detail-modal" role="dialog">
-        <component is="detail" show-item="{{showItem}}"></component>
-    </div>
+    <component is="detail" show-item="{{showItem}}"></component>
+    <component is="edit" edit-item="{{sourceEditItem}}" params="{{params}}"></component>
+    <component is="delete" operation-id="{{operationId}}"></component>
+    <component is="approve" operation-id="{{operationId}}"></component>
+    <component is="online" operation-id="{{operationId}}"></component>
+    <component is="offline" operation-id="{{operationId}}"></component>
+
 </template>
 
 <script>
-    var Config = require('../config.js')
+    var config = require('../config.js')
     var Util = require('../util.js')
     var $ = require('jquery')
 
@@ -44,13 +48,29 @@
                 typeConfig: [],
                 list: [],
                 total: 0,
-                showItem: {}
+                showItem: {},
+                editItem: {},
+                operationId: ''
+            }
+        },
+        computed: {
+            /*
+             * ugly 因为editItem在传递给Item的时候被双向绑定了，在传递给edit的时候也被双向绑定了，导致
+             * 在edit模态框里面修改的时候，list的值也改变了。。。真是。。。哎
+             */
+            sourceEditItem: function () {
+                return $.extend(true, {}, this.editItem)
             }
         },
         components: {
             item: require('../components/item.vue'),
             pagination: require('../components/pagination.vue'),
-            detail: require('../components/detail.vue')
+            detail: require('../components/detail.vue'),
+            edit: require('../components/edit.vue'),
+            delete: require('../components/modal/delete.vue'),
+            approve: require('../components/modal/approve.vue'),
+            online: require('../components/modal/online.vue'),
+            offline: require('../components/modal/offline.vue')
         },
         watch: {
             'params.page': function () {
@@ -64,6 +84,10 @@
             }
         },
         methods: {
+            showCreate: function () {
+                this.editItem = {}
+                $('#edit-dialog').modal('show')
+            },
             update: function () {
                 $('.loading').show()
                 $('.list-section').hide()
@@ -71,20 +95,20 @@
                 var type = this.params.type
                 var pn = this.params.pn
                 var me = this
-                this.typeConfig = Config.listConfig[page][type]
+                this.typeConfig = config.listConfig[page][type]
                 $.ajax({
-                    url: Config.url.GET_ITEM_LIST_URL,
+                    url: config.url.GET_ITEM_LIST_URL,
                     method: 'get',
                     dataType: 'json',
                     data: {
                         pagetype: page,
                         ideatype: type,
                         pn: pn,
-                        page_size: Config.page.PAGE_SIZE
+                        page_size: config.page.PAGE_SIZE
                     }
                 }).done(function (res) {
-                    if(res.errno == Config.statusCode.NOT_LOGIN) {
-                        window.location.replace(Config.url.HOME_URL)
+                    if(res.errno == config.statusCode.NOT_LOGIN) {
+                        window.location.replace(config.url.HOME_URL)
                     } else {
                         var data = res.data
                         $('.loading').hide()
@@ -93,7 +117,6 @@
                         $('.list-section').show()
                     }
                 }).fail(function (xhr, error) {
-                    console.log('fail')
                     Util.errorHandler(undefined, '获取列表失败')
                     $('.loading').hide()
                 })
@@ -104,7 +127,3 @@
         }
     }
 </script>
-
-<style lang="less">
-@import "../static/style/list.less";
-</style>

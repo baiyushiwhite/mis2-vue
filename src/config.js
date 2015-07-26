@@ -10,13 +10,23 @@ module.exports = {
         GET_ITEM_LIST_URL: baseUrl + '/wapmis/main/getidea',
         HOME_URL: baseUrl + '/wapmis/main/home',
         CITY_URL: baseUrl + '/wapmis/main/city',
-        PERMISSION_DENIED_URL: baseUrl + '/mis/common/permissionForbidden.html'
+        PERMISSION_DENIED_URL: baseUrl + '/mis/common/permissionForbidden.html',
+        UPDATE_STATUS_URL: baseUrl + '/wapmis/main/updateideastatus',
+        UPDATE_ITEM_URL: baseUrl + '/wapmis/main/updateidea'
     },
     validate: {
-        VALID: 0,
-        EMPTY: 1,
-        INVALID_NUMBER: 2
+        valid: '',
+        empty: '不能为空',
+        invalidNum: '请输入正整数',
+        invalidUrl: '请输入合法链接,如https://www.baidu.com',
+        invalidTime: '请输入00:00-23:59之间的时间',
+        invalidDuration: '结束时间应该晚于开始时间',
+        invalidCity: '请选择投放城市',
+        invalidImg: '请选择正确图片',
+        invalidImageSize: '图片大小不超过100kb',
+        invalidPrice: '请输入正确的价格（正数）'
     },
+    MAX_IMG_SIZE: 100000,
     page: {
         PAGE_SIZE: 8
     },
@@ -36,14 +46,35 @@ module.exports = {
     editConfig: {
         home: {
             banner: [
-                {title: '显示位置', field: 'position', isOption: true, format: 'nonnegative'},
-                {title: 'sid', field: 'sid', isOption: false, format: 'nonnegative'},
-                {title: '说明', field: 'explanation', isOption: false, format: 'text'},
-                {title: '图片', field: 'pic_url', isOption: true, format: 'img'},
-                {title: '跳转地址', field: 'link_url', isOption: true, format: 'url'},
-                {title: '投放日期', field: 'date', isOption: true, format: 'date'},
-                {title: '投放时间', field: 'time', isOption: true, format: 'duration'},
-                {title: '投放城市', field: 'city', isOption: true, format: 'city'}
+                {title: '显示位置', field: 'position', must: true, format: 'nonnegative', remind: '', invalid: false},
+                {title: 'sid', field: 'sid', must: false, format: 'nonnegative', remind: '', invalid: false},
+                {title: '说明', field: 'explanation', must: false, format: 'text', remind: '', invalid: false},
+                {title: '图片', field: 'picUrl', must: true, format: 'img', remind: '', invalid: false},
+                {title: '跳转地址', field: 'link_url', must: true, format: 'url', remind: '', invalid: false},
+                {title: '投放日期', field: 'date', must: true, format: 'date', invalid: false},
+                {title: '投放时间', field: 'active_time', must: true, format: 'duration', invalid: false},
+                {title: '投放城市', field: 'activeCityIds', must: true, format: 'city', invalid: false}
+            ],
+            icon: [
+                {title: '显示位置', field: 'position', must: true, format: 'nonnegative', remind: '', invalid: false},
+                {title: 'sid', field: 'sid', must: false, format: 'nonnegative', remind: '', invalid: false},
+                {title: '说明', field: 'explanation', must: false, format: 'text', remind: '', invalid: false},
+                {title: '图片', field: 'picUrl', must: true, format: 'img', remind: '', invalid: false},
+                {title: '跳转地址', field: 'link_url', must: true, format: 'url', remind: '', invalid: false},
+                {title: '投放日期', field: 'date', must: true, format: 'date', invalid: false},
+                {title: '投放时间', field: 'active_time', must: true, format: 'duration', invalid: false},
+                {title: '投放城市', field: 'activeCityIds', must: true, format: 'city', invalid: false}
+            ],
+            t10: [
+                {title: 'sid', field: 'sid', must: false, format: 'nonnegative', remind: '', invalid: false},
+                {title: '说明', field: 'explanation', must: false, format: 'text', remind: '', invalid: false},
+                {title: '图片', field: 'picUrl', must: true, format: 'img', remind: '', invalid: false},
+                {title: '跳转地址', field: 'link_url', must: true, format: 'url', remind: '', invalid: false},
+                {title: '标题', field: 'title', must: false, format: 'text', remind: '', invalid: false},
+                {title: '价格', field: 'current_price', must: true, format: 'price', remind: '', invalid: false},
+                {title: '投放日期', field: 'date', must: true, format: 'date', invalid: false},
+                {title: '投放时间', field: 'active_time', must: true, format: 'duration', invalid: false},
+                {title: '投放城市', field: 'activeCityIds', must: true, format: 'city', invalid: false}
             ]
         }
     },

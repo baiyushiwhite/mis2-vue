@@ -15,7 +15,7 @@
 </template>
 
 <script>
-    var Config = require('../config.js')
+    var config = require('../config.js')
     var $ = require('jquery')
     module.exports = {
         replace: true,
@@ -32,7 +32,7 @@
         },
         computed: {
             last: function () {
-                return Math.ceil(this.total / Config.page.PAGE_SIZE)
+                return Math.ceil(this.total / config.page.PAGE_SIZE)
             }
         },
         compiled: function () {

@@ -1,25 +1,14 @@
+@import "../../dep/bootstrap/bootstrap-datetimepicker.css";
 @import "variable.less";
 @import "common.less";
-body {
-  width: 100%;
-  font-family: "Microsoft Yahei", "宋体";
-  a {
-    color: @dark-green;
-    text-decoration: none;
-    cursor: pointer;
-    &:hover {
-      color: @dark-green;
-    }
-  }
-  ul {
-    list-style: none;
-  }
-}
+@import "list.less";
+@import "edit.less";
+@import "detail.less";
 
 #header {
   position: fixed;
   top: 0px;
-  z-index: 9999;
+  z-index: 10;
   width: 100%;
   height: 50px;
   background-color: @base-green;
@@ -78,5 +67,9 @@ body {
         }
       }
     }
+  }
+  #content {
+    padding-left: 0;
+    position: relative;
   }
 }

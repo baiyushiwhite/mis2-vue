@@ -1,0 +1,109 @@
+.edit-modal {
+  .modal-dialog {
+    height: 90%;
+    .modal-content {
+      height: 100%;
+      .modal-header {
+        height: 56px;
+      }
+      .modal-body {
+        position: absolute;
+        top: 56px;
+        bottom: 80px;
+        left: 0;
+        right: 0;
+
+        .edit-item-form {
+          fieldset {
+            .reminder {
+              color: @error-red;
+            }
+
+            .invalid {
+              border: 1px solid @error-red;
+              color: @error-red;
+            }
+
+            >label.col-md-2 {
+              text-align: right;
+              padding-right: 30px;
+            }
+
+            .preview-image {
+              margin-left: 20px;
+              max-width: 40%;
+              vertical-align: top;
+            }
+            .date {
+              float: left;
+              margin-right: 20px;
+              .form-control {
+                background-color: @light-gray;
+              }
+            }
+            span.pull-left {
+              display: inline-block;
+              height: 34px;
+              line-height: 34px;
+              margin-right: 20px;
+            }
+            span.time-to {
+              margin-right: 20px;
+            }
+
+            .duration-field, .city-field {
+              padding: 0;
+              .duration {
+                margin-bottom: 10px;
+              }
+            }
+            .city-panel {
+              padding: 5px 0px 5px 20px;
+              .city-list {
+                padding-left: 0;
+                p {
+                  font-weight: bold;
+                  margin-top: 5px;
+                  margin-bottom: 0px;
+                }
+                label {
+                  width: auto;
+                  cursor: pointer;
+                  text-align: left;
+                  margin-right: 15px;
+                  display: inline-block;
+                  font-size: 14px;
+                  font-weight: normal;
+                  line-height: 14px;
+                  height: 14px;
+                  input {
+                    line-height: 14px;
+                    height: 14px;
+                    margin-right: 4px;
+                  }
+                }
+              }
+            }
+
+            p.hint {
+              padding: 5px 15px;
+              background-color: #f1f3f5;
+            }
+
+            .selected-city-num {
+              margin: 0 5px;
+              font-weight: bold;
+            }
+          }
+        }
+      }
+      .modal-footer {
+        position: absolute;
+        height: 80px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+    }
+  }
+}
