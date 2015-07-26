@@ -86,7 +86,10 @@
         methods: {
             showCreate: function () {
                 this.editItem = {}
-                $('#edit-dialog').modal('show')
+                $('#edit-dialog').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                })
             },
             update: function () {
                 $('.loading').show()

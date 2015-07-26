@@ -28,7 +28,7 @@
 
                         <tr>
                             <td class="col-md-2">图片</td>
-                            <td class="col-md-10"><img src="{{showItem.pic_url}}"></td>
+                            <td class="col-md-10"><img v-attr="src:showItem.pic_url, title:showItem.pic_url"></td>
                         </tr>
                         <tr>
                             <td class="col-md-2">跳转地址</td>
@@ -43,7 +43,7 @@
 
                         <tr>
                             <td class="col-md-2">标题</td>
-                            <td>{{item.title}}</td>
+                            <td>{{showItem.title}}</td>
                         </tr>
 
                         <tr>

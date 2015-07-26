@@ -145,6 +145,10 @@ module.exports = {
             }
             if (fieldConfig.field === 'active_time') {
                 var durations = []
+                if (!item.active_time) {
+                    isAllValid = false
+                    return
+                }
                 $.each(item.active_time, function (i, duration) {
                     if (!me.validateFn.duration(duration)) {
                         isAllValid = false

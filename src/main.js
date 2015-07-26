@@ -31,4 +31,27 @@ router.configure({
   }
 })
 
+window.F = (function () {
+  var b = {}
+  return {
+    context: function (p, r) {
+      var q = arguments.length
+      if (q > 1) {
+        b[p] = r
+      } else {
+        if (q == 1) {
+          if (typeof p == "object") {
+            for (var o in p) {
+              if (p.hasOwnProperty(o)) {
+                b[o] = p[o]
+              }
+            }
+          } else {
+            return b[p]
+          }
+        }
+      }
+    }
+  }
+})()
 router.init('/list/home/banner/1')

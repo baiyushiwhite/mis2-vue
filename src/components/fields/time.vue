@@ -27,17 +27,14 @@
 <script>
     var validator = require('../../validator.js')
     var config = require('../../config.js')
+    var $ = require('jquery')
+
     module.exports = {
         replace: true,
         props: ['activeTime'],
         data: function () {
             return {
-                activeTime: {}
-            }
-        },
-        watch: {
-            'activeTime': function () {
-                console.log('activeTime change')
+                activeTime: []
             }
         },
         methods: {
@@ -55,10 +52,9 @@
             },
             validateDuration: function (duration) {
                 validator.validateFn.duration(duration)
-                console.dir(duration)
             }
         },
-        ready: function () {
+        created: function () {
             if (!this.activeTime || this.activeTime.length === 0) {
                 this.activeTime = [{
                     start: '00:00',
@@ -67,6 +63,12 @@
                     startInvalid: false,
                     endInvalid: false
                 }]
+            } else {
+                $.each(this.activeTime, function (i, duration) {
+                    duration.remind = ''
+                    duration.startInvalid = false
+                    duration.endInvalid = false
+                })
             }
         }
     }
