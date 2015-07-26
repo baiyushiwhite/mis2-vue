@@ -178,7 +178,7 @@ module.exports = {
             if (!me.validate(fieldConfig, item[fieldConfig.field])) {
                 isAllValid = false
             }
-            formData.append(fieldConfig.field, item[fieldConfig.field])
+            formData.append(fieldConfig.field, item[fieldConfig.field] || '')
         })
 
         if (!isAllValid) {

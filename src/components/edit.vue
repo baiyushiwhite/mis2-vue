@@ -133,7 +133,12 @@
                     page: '',
                     type: ''
                 },
-                editItem: {},
+                editItem: {
+                    active_time: [],
+                    start_time: '',
+                    end_time: '',
+                    activeCityIds: []
+                },
                 typeConfig: [],
                 disabled: false
             }

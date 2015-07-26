@@ -54,7 +54,7 @@
                 validator.validateFn.duration(duration)
             }
         },
-        created: function () {
+        ready: function () {
             if (!this.activeTime || this.activeTime.length === 0) {
                 this.activeTime = [{
                     start: '00:00',
@@ -63,12 +63,6 @@
                     startInvalid: false,
                     endInvalid: false
                 }]
-            } else {
-                $.each(this.activeTime, function (i, duration) {
-                    duration.remind = ''
-                    duration.startInvalid = false
-                    duration.endInvalid = false
-                })
             }
         }
     }

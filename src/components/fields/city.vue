@@ -38,10 +38,6 @@
             </ul>
         </div>
     </div>
-    <a v-on="click:test"></a>
-    <p v-repeat="item:ab">
-    <input type="checkbox" v-model="test[item.l]"/>{{test[item.l]}}
-    </p>
 </template>
 
 <script>
@@ -51,7 +47,7 @@
 
     module.exports = {
         replace: true,
-        props: ['activeCity', 'allCityMap', 'fieldConfig'],
+        props: ['activeCity', 'activeCityIds', 'fieldConfig'],
         data: function () {
             return {
                 activeCity: [],
@@ -233,14 +229,6 @@
             },
             initCityMap: function () {
                 var me = this
-
-                me.ab.push({l:'a'})
-                me.ab.push({l:'b'})
-                me.ab.push({l:'c'})
-                me.test['a'] = true
-                me.test['b'] = false
-                me.test['c'] = false
-
                 $.each(F.context('hotCities'), function (i, city) {
                     me.hotCities.push({
                         areaId: city.areaId,
@@ -261,7 +249,7 @@
                 })
             }
         },
-        created: function () {
+        beforeCompile: function () {
             this.initActiveCity()
             if (!F.context('cityLoaded')) {
                 this.loadCity()

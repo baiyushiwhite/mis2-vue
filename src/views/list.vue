@@ -49,7 +49,12 @@
                 list: [],
                 total: 0,
                 showItem: {},
-                editItem: {},
+                editItem: {
+                    active_time: [],
+                    start_time: '',
+                    end_time: '',
+                    activeCityIds: []
+                },
                 operationId: ''
             }
         },

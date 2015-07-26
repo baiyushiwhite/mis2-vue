@@ -24,7 +24,6 @@
     var $ = require('jquery')
 
     module.exports = {
-        el: '#delete-dialog',
         props: ['operationId'],
         data: function () {
             return {
@@ -48,13 +47,13 @@
                     if (res.errno != config.statusCode.SUCCESS) {
                         util.permissionForbidden(res)
                     } else {
-                        $(me.$el).modal('hide')
+                        $('#delete-dialog').modal('hide')
                         me.disabled = false
                         util.successHint('恭喜你，删除操作成功啦')
                         window.location.reload()
                     }
                 }).fail(function (xhr, error) {
-                    $(me.$el).modal('hide')
+                    $('#delete-dialog').modal('hide')
                     me.disabled = false
                     util.errorHandler('', '删除操作失败了哦o(╯□╰)o')
                 })
