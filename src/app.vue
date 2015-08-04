@@ -26,8 +26,7 @@
                     <ul>
                         <li v-repeat="pageConfig:navConfig"
                             v-class="active:pageConfig.page === params.page">
-                            <a href="#/list/{{pageConfig.page}}"
-                               v-class="active:pageConfig.page === params.page">{{pageConfig.title}}
+                            <a v-class="active:pageConfig.page === params.page">{{pageConfig.title}}
                             </a>
                             <ul class="nav sub-item">
                                 <li v-repeat="typeConfig:pageConfig.types"

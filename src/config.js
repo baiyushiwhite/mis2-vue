@@ -11,7 +11,7 @@ module.exports = {
         GET_ITEM_LIST_URL: baseUrl + '/wapmis/main/getidea',
         HOME_URL: baseUrl + '/wapmis/main/home',
         CITY_URL: baseUrl + '/wapmis/main/city',
-        PERMISSION_DENIED_URL: baseUrl + '/mis/common/permissionForbidden.html',
+        PERMISSION_DENIED_URL: baseUrl + '/wapmis/permissionForbidden.html',
         UPDATE_STATUS_URL: baseUrl + '/wapmis/main/updateideastatus',
         UPDATE_ITEM_URL: baseUrl + '/wapmis/main/updateidea',
         GET_DETAIL_ITEM: baseUrl + '/wapmis/main/detail'
@@ -25,10 +25,10 @@ module.exports = {
         invalidDuration: '结束时间应该晚于开始时间',
         invalidCity: '请选择投放城市',
         invalidImg: '请选择正确图片',
-        invalidImageSize: '图片大小不超过100kb',
+        invalidImageSize: '图片大小不超过1M',
         invalidPrice: '请输入正确的价格（非负数）'
     },
-    MAX_IMG_SIZE: 100000,
+    MAX_IMG_SIZE: 1000000,
     page: {
         PAGE_SIZE: 8
     },

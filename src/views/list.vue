@@ -98,6 +98,7 @@
                 var pn = this.params.pn
                 var me = this
                 this.typeConfig = config.listConfig[page][type]
+
                 $.ajax({
                     url: config.url.GET_ITEM_LIST_URL,
                     method: 'get',

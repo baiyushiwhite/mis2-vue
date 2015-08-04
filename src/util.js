@@ -23,8 +23,9 @@ function errorHandler(title, msg) {
 }
 
 function permissionForbidden(res) {
+    debugger
     if (res.errno == config.statusCode.NOT_LOGIN) {
-        window.location.replace(config.statusCode.HOME_URL);
+        window.location.replace(config.url.HOME_URL);
     }
     else if (res.errno == config.statusCode.PERMISSION_FORBIDDEN){
         window.location.replace(config.url.PERMISSION_DENIED_URL);
