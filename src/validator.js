@@ -8,6 +8,11 @@ module.exports = {
             fieldConfig.remind = isValid ? config.validate.valid : config.validate.invalidNum
             return isValid
         },
+        bool: function (fieldConfig, bool) {
+            fieldConfig.invalid = false
+            fieldConfig.remind = config.validate.valid
+            return true
+        },
         text: function (fieldConfig, text) {
             fieldConfig.invalid = false
             fieldConfig.remind = config.validate.valid
@@ -164,7 +169,7 @@ module.exports = {
                 if (!me.validateImg(fieldConfig, item.picUrl, item.pic_url)) {
                     isAllValid = false
                 }
-                formData.append('pic_url', item.picUrl)
+                formData.append('pic_url', item.picUrl || '')
                 return
             }
 
@@ -172,7 +177,11 @@ module.exports = {
                 if (!me.validate(fieldConfig, item.activeCityIds)) {
                     isAllValid = false
                 }
-                formData.append('active_city', item.activeCityIds)
+                if (item.activeCityIds.length === F.context('allCitiesNum')) {
+                    formData.append('active_city', 0)
+                } else {
+                    formData.append('active_city', item.activeCityIds)
+                }
                 return
             }
             if (!me.validate(fieldConfig, item[fieldConfig.field])) {

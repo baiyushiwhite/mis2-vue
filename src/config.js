@@ -1,4 +1,5 @@
-var baseUrl = 'http://10.94.43.36:8080';
+//var baseUrl = 'http://10.94.43.36:8080';
+var baseUrl = '';
 
 module.exports = {
     statusCode: {
@@ -12,7 +13,8 @@ module.exports = {
         CITY_URL: baseUrl + '/wapmis/main/city',
         PERMISSION_DENIED_URL: baseUrl + '/mis/common/permissionForbidden.html',
         UPDATE_STATUS_URL: baseUrl + '/wapmis/main/updateideastatus',
-        UPDATE_ITEM_URL: baseUrl + '/wapmis/main/updateidea'
+        UPDATE_ITEM_URL: baseUrl + '/wapmis/main/updateidea',
+        GET_DETAIL_ITEM: baseUrl + '/wapmis/main/detail'
     },
     validate: {
         valid: '',
@@ -40,6 +42,13 @@ module.exports = {
                 {title: 'Top10区', type: 't10'},
                 {title: '运营位区', type: 'business'},
                 {title: '虚拟团单区', type: 'vdeal'}
+            ]
+        },
+        {
+            title: '今日值得买',
+            page: 'worthBuy',
+            types: [
+                {title: '团单', type: 'poiList'},
             ]
         }
     ],
@@ -88,6 +97,23 @@ module.exports = {
             ],
             vdeal: [
                 {title: 'sid', field: 'sid', must: false, format: 'nonnegative', remind: '', invalid: false},
+                {title: '说明', field: 'explanation', must: false, format: 'text', remind: '', invalid: false},
+                {title: '图片', field: 'picUrl', must: true, format: 'img', remind: '', invalid: false},
+                {title: '跳转地址', field: 'link_url', must: true, format: 'url', remind: '', invalid: false},
+                {title: '标题', field: 'title', must: true, format: 'text', remind: '', invalid: false},
+                {title: '描述', field: 'desc', must: true, format: 'text', remind: '', invalid: false},
+                {title: '价格', field: 'current_price', must: false, format: 'price', remind: '', invalid: false},
+                {title: '原价', field: 'market_price', must: false, format: 'price', remind: '', invalid: false},
+                {title: '投放日期', field: 'date', must: true, format: 'date', invalid: false},
+                {title: '投放时间', field: 'active_time', must: true, format: 'duration', invalid: false},
+                {title: '投放城市', field: 'activeCityIds', must: true, format: 'city', invalid: false}
+            ]
+        },
+        worthBuy: {
+            poiList: [
+                {title: '显示位置', field: 'position', must: true, format: 'nonnegative', remind: '', invalid: false},
+                {title: 'dealId', field: 'dealId', must: true, format: 'text', remind: '', invalid: false},
+                {title: '黑名单', field: 'black', must: true, format: 'bool', remind: '', invalid: false},
                 {title: '说明', field: 'explanation', must: false, format: 'text', remind: '', invalid: false},
                 {title: '图片', field: 'picUrl', must: true, format: 'img', remind: '', invalid: false},
                 {title: '跳转地址', field: 'link_url', must: true, format: 'url', remind: '', invalid: false},
@@ -156,6 +182,23 @@ module.exports = {
                 {title: '投放日期', width: '8%', field: 'date'},
                 {title: '投放时间', width: '8%', field: 'time'},
                 {title: '投放城市', width: '14%', field: 'city'},
+                {title: '状态', width: '5%', field: 'status'},
+                {title: '操作', width: '5%', field: 'operation'}
+            ]
+        },
+        worthBuy: {
+            poiList: [
+                {title: '黑名单', width: '5%', field: 'black'},
+                {title: '图片', width: '10%', field: 'pic_url'},
+                {title: '链接', width: '10%', field: 'link_url'},
+                {title: '说明', width: '9%', field: 'explanation'},
+                {title: '标题', width: '8%', field: 'title'},
+                {title: '描述', width: '8%', field: 'desc'},
+                {title: '价格', width: '5%', field: 'current_price'},
+                {title: '原价', width: '5%', field: 'market_price'},
+                {title: '投放日期', width: '8%', field: 'date'},
+                {title: '投放时间', width: '8%', field: 'time'},
+                {title: '投放城市', width: '12%', field: 'city'},
                 {title: '状态', width: '5%', field: 'status'},
                 {title: '操作', width: '5%', field: 'operation'}
             ]

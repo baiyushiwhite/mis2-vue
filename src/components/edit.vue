@@ -14,6 +14,19 @@
                                 <span v-if="fieldConfig.must" class="required">*</span>
                                 {{fieldConfig.title}}
                             </label>
+
+                            <template v-if="'dealId' === fieldConfig.field">
+                                <input type="text" class="text-input col-md-5" v-model="editItem.dealId" v-on="change:fetchItem"/>
+                                <img class="right-loading" v-class="hidden:loaded" src="../static/img/loading.gif"/>
+                            </template>
+
+                            <template v-if="'black' === fieldConfig.field">
+                                <select v-model="editItem.black" v-on="change:validate(fieldConfig)">
+                                    <option value="1">是</option>
+                                    <option value="0">否</option>
+                                </select>
+                            </template>
+
                             <template v-if="['position', 'sid'].indexOf(fieldConfig.field) >= 0">
                                 <input type="text"
                                        v-model="editItem[fieldConfig.field]"
@@ -137,17 +150,25 @@
                     active_time: [],
                     start_time: '',
                     end_time: '',
-                    activeCityIds: []
+                    activeCityIds: [],
+                    desc: '',
+                    position: '',
+                    dealId: '',
+                    black: '',
+                    explanation: '',
+                    picUrl: '',
+                    link_url: '',
+                    title: '',
+                    current_price: '',
+                    market_price: ''
                 },
                 typeConfig: [],
-                disabled: false
+                disabled: false,
+                loaded: true
             }
         },
         watch: {
-            'params.page': function () {
-                this.typeConfig = $.extend(true, [], config.editConfig[this.params.page][this.params.type])
-            },
-            'params.type': function () {
+            'params': function () {
                 this.typeConfig = $.extend(true, [], config.editConfig[this.params.page][this.params.type])
             },
             'editItem': function () {
@@ -166,6 +187,47 @@
         methods: {
             validate: function (fieldConfig) {
                 validator.validate(fieldConfig, this.editItem[fieldConfig.field])
+            },
+            fetchItem: function () {
+                var me = this;
+                var dealId = me.editItem.dealId
+                me.loaded = false
+                $.ajax({
+                    url: config.url.GET_DETAIL_ITEM,
+                    method: 'get',
+                    dataType: 'json',
+                    data: {
+                        dealId: dealId
+                    }
+                }).done(function (res) {
+                    if(res.errno == config.statusCode.NOT_LOGIN) {
+                        window.location.replace(config.url.HOME_URL)
+                    } else {
+                        if (!res || !res.data || res.data.length < 1) {
+                            me.loaded = true
+                            return
+                        }
+
+                        /**
+                         * 好坑爹，一定要这么把editItem赋值为一个新对象。。。反过来用data extend editItem不行
+                         */
+                        var data = res.data
+                        for (var key in me.editItem) {
+                            if (me.editItem.hasOwnProperty(key) && !data.hasOwnProperty(key)) {
+                                if (key === 'pic_url' && data.pic_url) {
+                                    data.picUrl = ''
+                                } else {
+                                    data[key] = me.editItem[key]
+                                }
+                            }
+                        }
+                        me.editItem = data
+                        me.loaded = true
+                    }
+                }).fail(function (xhr, error) {
+                    util.errorHandler(undefined, '获取团单失败')
+                    me.loaded = true
+                })
             },
             submitItem: function () {
                 var me = this

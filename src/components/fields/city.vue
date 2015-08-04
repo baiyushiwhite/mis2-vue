@@ -85,14 +85,20 @@
             },
             initActiveCity: function () {
                 var me = this
-                if (!me.activeCity || me.activeCity.length === 0) {
-                    me.activeCity = []
-                }
-
                 me.activeCityIds = []
-                $.each(me.activeCity, function (i, city) {
-                    me.activeCityIds.push(city.areaId)
-                })
+                if (me.activeCity === 0) {
+                    me.activeCity = F.context('allCities')
+                    $.each(me.activeCity, function (key, value) {
+                        $.each(value, function (i, city) {
+                            me.activeCityIds.push(city.areaId)
+                        })
+                    })
+                }
+                else if (me.activeCity && me.activeCity.length > 0) {
+                    $.each(me.activeCity, function (i, city) {
+                        me.activeCityIds.push(city.areaId)
+                    })
+                }
             },
             loadCity: function () {
                 var me = this
@@ -108,8 +114,8 @@
                         F.context('hotCities', res.data.cityhot)
                         F.context('cityLoaded', true)
                         F.context('allCitiesNum', me.calAllCitiesNum())
-
-                        me.initCityMap()
+                        me.initActiveCity()
+                        me.initCityMap(me.activeCity === 0)
                         me.loaded = true
                     }
                 }).fail(function () {
@@ -227,13 +233,13 @@
                     })
                 }
             },
-            initCityMap: function () {
+            initCityMap: function (selectAll) {
                 var me = this
                 $.each(F.context('hotCities'), function (i, city) {
                     me.hotCities.push({
                         areaId: city.areaId,
                         areaName: city.areaName,
-                        isCheck: me.activeCityIds.indexOf(city.areaId) >= 0
+                        isCheck: selectAll || me.activeCityIds.indexOf(city.areaId) >= 0
                     })
                 })
 
@@ -243,18 +249,18 @@
                         me.allCities[key].push({
                             areaId: city.areaId,
                             areaName: city.areaName,
-                            isCheck: me.activeCityIds.indexOf(city.areaId) >= 0
+                            isCheck: selectAll || me.activeCityIds.indexOf(city.areaId) >= 0
                         })
                     })
                 })
             }
         },
         beforeCompile: function () {
-            this.initActiveCity()
             if (!F.context('cityLoaded')) {
                 this.loadCity()
             } else {
-                this.initCityMap()
+                this.initActiveCity()
+                this.initCityMap(this.activeCity === 0)
                 this.loaded = true
             }
         }

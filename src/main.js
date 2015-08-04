@@ -13,16 +13,12 @@ require(['jquery'], function (jQuery) {
 })
 
 router.on('/list/:page/:type/:pn', function (page, type, pn) {
-  app.params.page = page
-  app.params.type = type
-  app.params.pn = pn
+  app.params = {
+    page: page,
+    type: type,
+    pn: pn
+  }
   app.view = 'list-view'
-})
-
-router.on('/create/:page/:type', function (page, type) {
-  app.view = 'create-view'
-  app.params.page = page
-  app.params.type = type
 })
 
 router.configure({

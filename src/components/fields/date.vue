@@ -69,9 +69,9 @@
             // 在require(jquery)先执行
             if (!this.startTime || !this.endTime) {
                 var today = new Date()
-                this.startTime = today.getFullYear() + '-0' + (today.getMonth() + 1) + '-' + today.getDate()
+                this.startTime = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
                 var twoweek = new Date(today - 0 + 14 * 86400000)
-                this.endTime = twoweek.getFullYear() + '-0' + (twoweek.getMonth() + 1) + '-0' + twoweek.getDate()
+                this.endTime = twoweek.getFullYear() + '-' + (twoweek.getMonth() + 1) + '-' + twoweek.getDate()
             }
             this.addListener()
         }

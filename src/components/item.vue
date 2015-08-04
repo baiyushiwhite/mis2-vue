@@ -5,6 +5,11 @@
       <template v-if="['explanation', 'name', 'title', 'desc', 'current_price', 'market_price'].indexOf(fieldConfig.field) >= 0">
         {{item[fieldConfig.field]}}
       </template>
+
+      <template v-if="'black' === fieldConfig.field">
+        {{(item.black - 0)? '是' : '否'}}
+      </template>
+
       <template v-if="'pic_url' === fieldConfig.field">
         <img v-attr="src:item.pic_url, title:item.pic_url"/>
       </template>
@@ -24,13 +29,16 @@
       </template>
 
       <template v-if="'city' === fieldConfig.field">
-        <span v-repeat="city:item.active_city.slice(0,6)" data-areaid="{{city.areaId}}">
+        <span v-if="item.active_city === 0">
+          全部城市
+        </span>
+        <template v-if="item.active_city.length > 0">
+          <span v-repeat="city:item.active_city.slice(0,6)" data-areaid="{{city.areaId}}">
           {{city.areaName}}
         </span>
-        <span v-repeat="city:item.active_city.slice(6)" class="hidden" data-areaid="{{city.areaId}}">
-          {{city.areaName}}
-        </span>
-        <span v-if="item.active_city.length > 6">等个{{item.active_city.length}}城市</span>
+          <span v-if="item.active_city.length > 6">等个{{item.active_city.length}}城市</span>
+        </template>
+
       </template>
 
       <template v-if="'status' === fieldConfig.field">

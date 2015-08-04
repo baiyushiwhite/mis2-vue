@@ -23,10 +23,10 @@ function errorHandler(title, msg) {
 }
 
 function permissionForbidden(res) {
-    if (res.errno === config.statusCode.NOT_LOGIN) {
+    if (res.errno == config.statusCode.NOT_LOGIN) {
         window.location.replace(config.statusCode.HOME_URL);
     }
-    else if (res.errno === config.statusCode.PERMISSION_FORBIDDEN){
+    else if (res.errno == config.statusCode.PERMISSION_FORBIDDEN){
         window.location.replace(config.url.PERMISSION_DENIED_URL);
     }
     else {

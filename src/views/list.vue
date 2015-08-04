@@ -32,7 +32,7 @@
 
 <script>
     var config = require('../config.js')
-    var Util = require('../util.js')
+    var util = require('../util.js')
     var $ = require('jquery')
 
     module.exports = {
@@ -78,13 +78,7 @@
             offline: require('../components/modal/offline.vue')
         },
         watch: {
-            'params.page': function () {
-                this.update()
-            },
-            'params.type': function () {
-                this.update()
-            },
-            'params.pn': function () {
+            'params': function () {
                 this.update()
             }
         },
@@ -120,12 +114,17 @@
                     } else {
                         var data = res.data
                         $('.loading').hide()
-                        me.list = data.list
-                        me.total = data.total
+                        if (data.list) {
+                            me.list = data.list
+                            me.total = data.total
+                        } else {
+                            util.errorHandler(undefined, '获取列表失败')
+                        }
+
                         $('.list-section').show()
                     }
                 }).fail(function (xhr, error) {
-                    Util.errorHandler(undefined, '获取列表失败')
+                    util.errorHandler(undefined, '获取列表失败')
                     $('.loading').hide()
                 })
             }
