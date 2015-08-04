@@ -119,6 +119,7 @@
                             me.total = data.total
                         } else {
                             util.errorHandler(undefined, '获取列表失败')
+                            $('.loading').hide()
                         }
 
                         $('.list-section').show()
